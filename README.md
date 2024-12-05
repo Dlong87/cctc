@@ -1,0 +1,111 @@
+-----WINDOWS-----
+
+places of persistance:
+	HKLM
+	HKU
+	HKCU
+	HKCC
+	|--->   RUN
+		RUNONCE
+WINDOWS REGISTRY FROM CLI
+|--->REG QUERY ... (NEED FULL PATH TO FIND INFO)
+
+TO DISABLE WINDOWS DEFENDER:
+(CLI)Set-MpPreference -DisableRealtimeMonitoring $TRUE
+(GUI)VIRUS & THREAT PROTECTION
+-----VIRUS & THREAT PROTECTION SETTINGS
+-----MANAGE SETTINGS
+-----REAL-TIME PROTECTION (SWITCH TO OFF)
+
+SYSINTERNALS:
+--(net use * http://live.sysinternals.com)
+
+COMMON LOCATIONS OF PERSISTANCE:
+
+--HKLM\Software\Microsoft\Windows\CurrentVersion\Run(RUNONCE)
+--HKU\<SID>\Software\Microsoft\Windows\CurrentVersion\Run(RUNONCE)
+--HKLM\SYSTEM\CurrentControlSet\services		
+
+
+POWERSHELL COMMANDS
+-GET-HELP <COMMAND> -FULL -DETAILED
+-GET-CONTENT
+-GET-CHILDITEM
+-Get-Help about_command_syntax		
+-GET-PROCESS | Select-Object Name, ID, path     # Displays the Get-Process Properties of 'Name, ID, Path' for every process	
+<SYNTAX> -ErrorAction SilentlyContinue           # ERROR HANDLING	
+		
+		
+		
+
+---POWERSHELL PROFILES:
+All Users, All Hosts          $PsHome\Profile.ps1
+
+All Users, Current Host       $PsHome\Microsoft.PowerShell_profile.ps1
+
+Current User, All Hosts       $Home\[My]Documents\Profile.ps1
+
+Current User, Current Host    $Home\[My ]Documents\WindowsPowerShell\Profile.ps1
+
+WINDOWS BOOT:
+BCDEDIT: CHECK TO SEE IF SOMETHING IN WITH BOOT SETTINGS IS MISCONFIGURED
+BCDEDIT /?
+
+
+
+PROCESS VAILIDITY:
+Get-Ciminstance Win32_Process      #View Process instances with Win32 process.
+Get-Member                         #View the additional Properties
+tasklist /v                        #Display verbose task information
+tasklist /svc                      #Display service information for each process 
+tasklist /m | more                 #Display modules/dlls associated to all processes.
+Get-Service                        #SERVICE INFO 
+Get-ScheduledTask                  #DISPLAYS SCHEDULED TASKS 
+schtasks /query                    #Displays tasks scheduled to run
+(TASK SCHEDULER)                   #TO VIEW SCHEDULED TASK IN GUI
+--NETSTAT -ANOB | MORE             #Displays all TCP/UDP connections with ports in numerical form with PID and executable associated to the connections
+LOOK FOR UNKNOWN PROCESS NAMES AND BAD LAUNCH POINTS FORPROCESSES
+WINDOWS EXECUTEABLES (SERVICES AND PROCESSES) ARE RAN OUT OF C:\WINDOWS\SYSTEM32 
+
+
+AUDITING & LOGGING:
+WMIC USERACCOUNT GET NAME,SID                                 #USED TO SHOW ALL USERS AND SIDS
+Get-WmiObject win32_useraccount | select name,sid             #show local and domain Users and SID 
+BACKROUND ACTIVITIY MODERATOR (BAM)
+  |---> HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings
+        HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings
+
+LOCATION OF RECYCLE BIN 
+|---->  C:\$Recycle.bin
+Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName             #Find the Contents of the Recycle Bin
+wmic useraccount where <'SID'> GET NAME                                                #Match SID to USER
+LOCATION OF PREFETCH
+|---->  C:\Windows\Prefetch
+Get-Childitem -Path 'C:\Windows\Prefetch' -ErrorAction Continue | select -First        #Output shows the programs that were run and when they were executed
+Get-Eventlog                   #Windows Event View Application
+  
+---SCHTASK
+---TASK SCHEDULER 
+---AUTORUNS:
+    |---->LOCATIONS
+          |--> HKLM\Software\Microsoft\Windows\CurrentVersion\Run (RUNONCE)
+                HKLM\System\CurrentControlSet\ServiceS
+                HKCU\Software\Microsoft\Windows\CurrentVersion\Run (RUNONCE)          #CURRENT USER
+                HKU\<sid>\Software\Microsoft\Windows\CurrentVersion\Run (RUNONCE)     #SPECIFIC USER
+                
+
+
+LINKS:
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process?view=powershell-7.1
+https://devblogs.microsoft.com/scripting/table-of-basic-powershell-commands/
+https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks
+https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns
+https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/Default.aspx
+
+
+
+
+
+
+
+mstsc /v:<IP> /u:user (RDP FROM WINDOWS TO LINUX) 
