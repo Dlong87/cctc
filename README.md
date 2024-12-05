@@ -96,6 +96,7 @@ Get-Eventlog                   #Windows Event View Application
 
 
 LINKS:
+
 https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process?view=powershell-7.1
 https://devblogs.microsoft.com/scripting/table-of-basic-powershell-commands/
 https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks
@@ -109,3 +110,4 @@ https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/Default.aspx
 
 
 mstsc /v:<IP> /u:user (RDP FROM WINDOWS TO LINUX) 
+scp -r <path of remote directory> user@ip:<path to where you want the file>   #have be ssh or secure connection to remote station to work 
