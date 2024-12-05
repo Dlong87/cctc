@@ -109,5 +109,7 @@ https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/Default.aspx
 
 
 
-mstsc /v:<IP> /u:user (RDP FROM WINDOWS TO LINUX) 
+mstsc /v:<IP> /u:user (RDP FROM WINDOWS TO LINUX)
+	
+
 scp -r <path of remote directory> user@ip:<path to where you want the file>   #have be ssh or secure connection to remote station to work 
