@@ -102,7 +102,7 @@ https://devblogs.microsoft.com/scripting/table-of-basic-powershell-commands/
 https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks
 https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns
 https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/Default.aspx
-
+https://github.com/volatilityfoundation/volatility/wiki/command-reference
 
 
 
