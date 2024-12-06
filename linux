@@ -1,0 +1,73 @@
+SITUATIONAL AWARENESS: 
+|---> HOSTNAME,UNAME-A,WHOAMI,IP ADDR/IFCONFIG, IP ROUTE
+
+ERROR HANDLING:
+|---> 2>/DEV/NULL
+
+LINKS:
+https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard
+
+
+LOCATIONS:
+/ETC/PASSWD                 #UID AND USERNAMES ARE STORED IN THSI LOCATION
+/ETC/SHADOW                 #PASSWORDS AND HASHES USERS HASHES STORED HERE
+/ETC/GROUP                  #SHOW GROUPING INFO NUMERICALLY 
+ID                          #SHOWS GROUP INFO FORR CURRENT USER
+LS -LISA <FILE>             #SHOWS PERMISSIONS OF A FILE
+(AWK)                       #FORMATTING OUTPUT COMMAND LOOK UP SYNTAX
+
+
+SYSV:
+|---> /ETC/INIT              #INITAILIZATION DEAMON LOCATION
+      /ETC/INITTAB           #USED TO CREATE RUN LEVELS 
+      /ETC/RC*.D             #LOCATION OF THE PROCESSES THAT ARE STARTED BY THE RUN LEVELS
+      /SBIN/INIT             #initialize the system to a target run level specified in /etc/inittab
+
+
+
+SYSTEMD:
+|---> /SBIN/INIT IS SYSBOLICALLY LINKED TO /lib/systemd/system 
+      /usr/lib/systemd/system 
+      /DEFAULT.TARGET IS LOCATED IN /LIB/SYSTEMD/SYSTEM
+
+      /ETC/SYSTEMD/SYSTEM/*              |----|
+      /LIB/SYSTEMD/SYSTEM/*                   |- WNATS AND REQUIREMENT LOCATIONS
+      /RUN/SYSTEMD/GENERATOR/*           |----|
+      
+      SYSTEMCTL  
+
+/ETC/ENVIRONMENT              #USEDTO FIND GLOBAL VARIABLES LOOK TO SEE IF ANYTHING IS INCOORRECT OR CHANGED COULD BE SIGNS OF PERSISTANCE
+/ETC/PROFILE                  #executes whenever a user logs into an interactive shell on Linux
+
+.BASH_PROFILE                 #executes when a user invokes an interactive login shell on the system ALSO REFERRED TO AS .PROFILE
+.BASHRC                       #executes when interactive non-login shell is invoked
+
+
+PROCESS LISTING:
+TOP                          #provides a dynamic real-time view of the running system
+HTOP                         #display various information about Linux processes dynamically, but in a more human friendly way
+PS -ELF
+
+
+CRON JOBS:
+|---> /VAR/SPOOL/CRON        |---|
+      /ETC/CRON.D                |-- ALL CHECKED BY THE CRON DAEMAON ONCE A MINUTE
+      /ETC/CRONTAB           |---|
+
+      SYSTEM CRON JOBS           #LOCATED IN /ETC/CRONTAB
+      USER CRON JOBS             #LOCATED IN /VAR/SPOOL/CRON/CRONTAB
+
+
+CRONTAB                          #OPENS THE CRON TABLE FOR EDITING 
+  |--> -U [USER] FILE            #load the crontab data from the specified file
+        -L -U [USER]             #display/list user’s crontab contents
+        -R -U [USER]             #remove user’s crontab contents
+        -E -U [USER]             #edit user’s crontab contents
+
+
+|----> SUDO LSOF                 #View File Descriptors
+
+
+
+
+
