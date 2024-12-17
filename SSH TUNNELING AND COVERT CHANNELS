@@ -159,7 +159,7 @@ LOCAL PORT FORWARDING:
             |--> ssh student@172.16.1.15 -L 1180:localhost:80
 
                     Internet_Host:
-                    firefox http://localhost:1180
+                    wget -r http://localhost:1180
                     {Webpage of Blue_DMZ_Host-1}
                     # THIS CONNECTION I MADE OVER HTTP 
                     # WHEN WORKING OVER HTTP MORE BTETTER TO USETHE WGET COMMAND REATHER THAN WEBPAGE INFO BUT GET IT HOW YOU GET IT 
