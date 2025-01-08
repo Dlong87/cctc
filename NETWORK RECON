@@ -1,0 +1,188 @@
+RECON STEPS: 
+  |--> Network Footprinting
+        Network Scanning
+        Network Enumeration
+        Vulnerability Assessment
+
+
+
+NETWORK FINGERPRINTING:
+    |--> Collect information relating to target
+            |--> NETWORK INFO 
+                  SYSTEMS
+                  ORGANIZATION
+
+
+NETWORK SCANNING:
+    |--> PORT SCANNING
+          NETWORK SCANNING 
+          VULNERABILITY SCANNING 
+
+NETWORK ENUM:
+    |--> NET RESOURCES AND SHARES 
+          USERS AND GROUPS
+          MACHINE NAMES 
+          APPS AND BANNERS 
+
+DIG / WHOIS QUERYIES:
+
+whois <DOMAIN NAME BEING SEARCHED>
+
+DIG <DOMAIN BEING SEACHED> <RECORD TYPE>
+                            A
+                            AAAA
+                            MX
+                            TXT
+                            NS
+                            SOA
+
+PASSIVE OS FINGERPRINTING: 
+    |--> p0f: Passive scanning of network traffic and packet captures
+          |--> sudo p0f -i eth0        #FINGERPRINTING OF A INTERFACE
+                sudo p0f -r test.pcap      # FINGERPRINTING A WHOLE PCAP
+
+POF:
+  |--> Examine packets sent to/from target
+        guess Operating Systems and version
+        guess client/server application and version
+        
+NMAP SCAN TYPES:
+    |--> Ping sweep (-sP, -PE)
+          SYN scan (-sS)
+          Full connect scan (-sT)
+          UDP scan (-sU)
+          FTP scan (-b)
+          OS fingerprinting scan (-O)
+          Version scan (-sV)
+          ICMP Ping (-PE)
+          No Ping (-Pn)
+
+
+NMAP SCAN TIMEOUT:
+    |--> -T3 - Normal - 1 Sec
+          -T4 - Aggresive - 500 ms     # MOST USEFUL AND ACCUEREATE 
+          -T5 - Insane - 250 ms
+
+
+NETCAT SCANNING:
+    |-->  nc [Options] [Target IP] [Target Port(s)]
+          -v : Be verbose [use twice -vv to be more verbose]
+          -u : To switch to UDP
+
+NETCAT TCP SCAN:                #MAKE IN VI AND CHMOD 777 TO MAKE IT EXECUTABLE
+#!/bin/bash
+echo "Enter network address (e.g. 192.168.0): "
+read net
+echo "Enter starting host range (e.g. 1): "
+read start
+echo "Enter ending host range (e.g. 254): "
+read end
+echo "Enter ports space-delimited (e.g. 21-23 80): "
+read ports
+for ((i=$start; $i<=$end; i++))
+do
+    nc -nvzw1 $net.$i $ports 2>&1 | grep -E 'succ|open' &
+done
+wait
+
+
+NETCAT UDP SCAN:                  #MAKE IN VI AND CHMOD 777 TO MAKE IT EXECUTABLE
+#!/bin/bash
+echo "Enter network address (e.g. 192.168.0): "
+read net
+echo "Enter starting host range (e.g. 1): "
+read start
+echo "Enter ending host range (e.g. 254): "
+read end
+echo "Enter ports space-delimited (e.g. 21-23 80): "
+read ports
+for ((i=$start; $i<=$end; i++))
+do
+    nc -nuvzw1 $net.$i $ports 2>&1 | grep -E 'succ|open' &
+done
+wait
+
+
+NETCAT BANNER GRAB:
+|--> nc [Target IP] [Target Port]        #Find what is running on a particular port
+      -u : To switch to UDP
+      
+
+CURL / WGET:            #CAN BOTH BE USED ON HTTP AND FTP TRAFFIC
+    |--> curl http://<IP ADDRESS>
+          curl ftp://
+|
+          wget -r http://<IP ADRESS>          # -R RECURSIVE/ ALL 
+          wget -r ftp://
+
+          
+INTERNAL DISCOVERY:
+    |--> IP CONFIG
+          |--> Windows: ipconfig /all
+                Linux: ip address
+
+  DNS CONFIG:
+    |--> Windows: ipconfig /displaydns
+          Linux: cat /etc/resolv.conf
+
+  ARP CACHE:
+      |--> Windows: arp -a
+            Linux: ip neighbor
+
+  NET CONNECTIONS:
+      |--> Windows: netstat
+            Linux: ss
+
+  SERVICE FILES:
+      |--> Windows: %SystemRoot%\system32\drivers\etc\services
+            Linux/Unix: /etc/services
+
+  OS INFO:
+      |--> Windows: systeminfo
+            Linux: uname -a and /etc/os-release
+
+  RUNNING PROCESSES:
+      |--> Windows: tasklist
+            Linux: ps -elf or top
+
+  COMMAND PATH:
+  WHICH/ WHEREIS
+
+  ROUTING TABLE:
+      |--> Windows: route print
+            Linux: ip route
+            VyOS: show ip route
+
+  FILE SEARCH:
+      |--> find / -name hint* 2> /dev/null
+            find / -iname flag* 2> /dev/null
+
+  SSH CONFIG:
+      |--> Windows: C:\Windows\System32\OpenSSH\sshd_config
+            Linux: /etc/ssh/sshd_config
+
+            
+
+ACTIVE INTERAL SCANNING:
+    |-->for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done      #PING SCAN SCRIPT TO FIND RESPONCIVE SYSTEMS
+
+
+
+
+
+NETWORK MAPPING:
+    |--> Device type (Router/host)
+          Host-names
+          Interface names
+          IP address and CIDRs
+          TCP and UDP ports (OPEN ONLY)
+          MAC ADDY
+          OS type/version
+          creds
+
+
+
+
+
+
+                
