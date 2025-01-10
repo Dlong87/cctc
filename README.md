@@ -1,0 +1,5 @@
+IPTABLES CHEATSHEET
+https://onedrive.live.com/personal/2f6f542cffbdfabc/_layouts/15/Doc.aspx?sourcedoc=%7Bffbdfabc-542c-206f-802f-136600000000%7D&action=default&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3gvcyFBcno2dmY4c1ZHOHZnY3dUdVd4WG9jc1FLSlZZc2c_ZT01d0tHUjQ&slrid=020876a1-70f0-7000-57bd-261ecb92b5b9&originalPath=aHR0cHM6Ly8xZHJ2Lm1zL3gvYy8yZjZmNTQyY2ZmYmRmYWJjL1FiejZ2ZjhzVkc4Z2dDOFRaZ0FBQUFBQXVXeFhvY3NRS0pWWXNnP3J0aW1lPVhSdzRrQ2t4M1Vn&CID=b539649f-ee6a-43a8-8bf5-a14da86f2b31&_SRM=0:G:38
+
+NFTABLES CHEATSHEET
+https://onedrive.live.com/:x:/g/personal/2F6F542CFFBDFABC/s!Arz6vf8sVG8vgdIhZGSNCZcZ_lsmyw?resid=2F6F542CFFBDFABC!26913&ithint=file%2Cxlsx&e=kazYRl&migratedtospo=true&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3gvcyFBcno2dmY4c1ZHOHZnZEloWkdTTkNaY1pfbHNteXc_ZT1rYXpZUmw
