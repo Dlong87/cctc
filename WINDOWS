@@ -117,7 +117,10 @@ scp -r <path of remote directory> user@ip:<path to where you want the file>   #h
 TO FIND HIDDEN DIRECTORIES:
     |--> DIR /A:HD <PATH TO THE DIRECTORY>
 
-TO FIND ADS IN POWERSHELL: get-childitem -Recurse | get-item -stream * | where-object stream -ne ':$DATA'  #-NE IS A LOGICAL OPERATOR USED TO LOOK FOR ALL THINGS THAT ARE NOT THE SAME
+TO FIND ADS IN POWERSHELL: 
+		|--> get-childitem -Recurse | get-item -stream * | where-object stream -ne ':$DATA'				
+
+#-NE IS A LOGICAL OPERATOR USED TO LOOK FOR ALL THINGS THAT ARE NOT THE SAME
 
 
 	
