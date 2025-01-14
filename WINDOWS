@@ -6,7 +6,7 @@ places of persistance:
 	HKCU
 	HKCC
 	|--->   RUN
-		RUNONCE
+		      RUNONCE
 WINDOWS REGISTRY FROM CLI
 |--->REG QUERY ... (NEED FULL PATH TO FIND INFO)
 
@@ -79,6 +79,7 @@ LOCATION OF RECYCLE BIN
 |---->  C:\$Recycle.bin
 Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName             #Find the Contents of the Recycle Bin
 wmic useraccount where <'SID'> GET NAME                                                #Match SID to USER
+wmic useraccount get name,sid                                                          #LIST ALL SIDs ON THE SYSTEM
 LOCATION OF PREFETCH
 |---->  C:\Windows\Prefetch
 Get-Childitem -Path 'C:\Windows\Prefetch' -ErrorAction Continue | select -First        #Output shows the programs that were run and when they were executed
@@ -112,3 +113,11 @@ https://github.com/volatilityfoundation/volatility/wiki/command-reference
 mstsc /v:<IP> /u:user (RDP FROM WINDOWS TO LINUX)
 	
 scp -r <path of remote directory> user@ip:<path to where you want the file>   #have be ssh or secure connection to remote station to work 
+
+TO FIND HIDDEN DIRECTORIES:
+    |--> DIR /A:HD <PATH TO THE DIRECTORY>
+
+TO FIND ADS IN POWERSHELL: get-childitem -Recurse | get-item -stream * | where-object stream -ne ':$DATA'  #-NE IS A LOGICAL OPERATOR USED TO LOOK FOR ALL THINGS THAT ARE NOT THE SAME
+
+
+	
