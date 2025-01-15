@@ -1,5 +1,18 @@
 SITUATIONAL AWARENESS: 
-|---> HOSTNAME,UNAME-A,WHOAMI,IP ADDR/IFCONFIG, IP ROUTE
+|---> HOSTNAME,UNAME-A,WHOAMI,IP ADDR/IFCONFIG, IP ROUTE, SS/ NETSTAT -ANTP, W/WHO/WHOAMI, ARP -A, UPTIME
+
+VARIABLES:
+all variables stat with the "$" followed by the letter or number being used to lable/name it
+echo $a="100"            #echo is used to print the info after it 
+                        #$a is the variable name 
+                        #="100" is setting the value of "100" inside of the $A varaible
+
+
+
+
+
+
+
 
 ERROR HANDLING:
 |---> 2>/DEV/NULL
@@ -12,6 +25,9 @@ LOCATIONS:
 /ETC/PASSWD                 #UID AND USERNAMES ARE STORED IN THSI LOCATION
 /ETC/SHADOW                 #PASSWORDS AND HASHES USERS HASHES STORED HERE
 /ETC/GROUP                  #SHOW GROUPING INFO NUMERICALLY 
+
+
+STRING MANIPULATION:
 ID                          #SHOWS GROUP INFO FORR CURRENT USER
 LS -LISA <FILE>             #SHOWS PERMISSIONS OF A FILE
 (AWK)                       #FORMATTING OUTPUT COMMAND LOOK UP SYNTAX
