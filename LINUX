@@ -84,6 +84,10 @@ CRONTAB                          #OPENS THE CRON TABLE FOR EDITING
 |----> SUDO LSOF                 #View File Descriptors
 
 
+MAN PAGE FOR LINUX COMMANDS:
+    https://linux.die.net/man/1/
+
+
 
 
 
