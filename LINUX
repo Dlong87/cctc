@@ -9,11 +9,6 @@ echo $a="100"            #echo is used to print the info after it
 
 
 
-
-
-
-
-
 ERROR HANDLING:
 |---> 2>/DEV/NULL
 
@@ -31,6 +26,8 @@ STRING MANIPULATION:
 ID                          #SHOWS GROUP INFO FORR CURRENT USER
 LS -LISA <FILE>             #SHOWS PERMISSIONS OF A FILE
 (AWK)                       #FORMATTING OUTPUT COMMAND LOOK UP SYNTAX
+-R                          #RECURSIVE SEARCH USED WITH ( LS COMMAND ) 
+-A                          #ALL/ (EVEN HIDDEN FILES)
 
 
 SYSV:
@@ -47,8 +44,9 @@ SYSTEMD:
       /DEFAULT.TARGET IS LOCATED IN /LIB/SYSTEMD/SYSTEM
 
       /ETC/SYSTEMD/SYSTEM/*              |----|
-      /LIB/SYSTEMD/SYSTEM/*                   |- WNATS AND REQUIREMENT LOCATIONS
+      /LIB/SYSTEMD/SYSTEM/*                   |- WANTS AND REQUIREMENT LOCATIONS
       /RUN/SYSTEMD/GENERATOR/*           |----|
+
       
       SYSTEMCTL  
 
@@ -85,7 +83,7 @@ CRONTAB                          #OPENS THE CRON TABLE FOR EDITING
 
 
 MAN PAGE FOR LINUX COMMANDS:
-    https://linux.die.net/man/1/
+    https://linux.die.net/man/1/        #list of all major linux commands with options and switches
 
 
 
