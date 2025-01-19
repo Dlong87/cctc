@@ -122,5 +122,9 @@ TO FIND ADS IN POWERSHELL:
 
 #-NE IS A LOGICAL OPERATOR USED TO LOOK FOR ALL THINGS THAT ARE NOT THE SAME
 
+processor info in powershell:
+		|--> get-ciminstance -classname win32_processor
 
+count number of files in a directory:
+		|--> (get-childitem -Path C:\users\CTF\Videos -file).count 
 	
