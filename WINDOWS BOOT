@@ -1,0 +1,62 @@
+BIOS and UEFI:
+    |--> ensure critical hardware like SATA devices are functional then locates MBR or GUID PARTITION TABLE
+BIOS is legacy, UEFI is faster and more secure
+
+
+firmware: software coded in non-volitile memory, allows for hardware and software to fnction togerther
+
+BIOS MBR (MASTER BOOT RECORD):
+    |--> boot loader
+            |--> Windows 2003 and older used NTLDR or New Technology Loader
+                  Windows 7 Service Pack 1 and newer uses bootmgr or New Technology Loader
+
+UEFI BOOT MANAGER: 
+    |--> Windows bootmgfw.efi or Windows Boot Manager
+
+- both BIOS and UEFI both do hardware checks but BIOS finds the MBR and UEFI loads the EFI PARTITION which contains UEFI BOOT MANAGERS  and then both load th OS 
+
+BIOS or UEFI FIND COMMAND:
+    |--> findstr /C:"Detected boot environment" "C:\Windows\Panther\Setupact.log"
+          Get-Content C:\Windows\Panther\Setupact.log | Select-String "Detected boot environment"
+
+          bcdedit | findstr /i winload    #winload.exe = BIOS, winload.efi = UE
+
+
+KERNEL INITIALIZATION:          #KERNEL = HEART OF OS
+    |--> KERNEL = "Ntoskrnl.exe" 
+          |--> Loads Windows Registry
+                Loads device drivers
+                Starts the system pagefile (C:\pagefile.sys) --> (pagefile: storage space for processes that are not actively bing used and pushed to the background)
+                loads "hal.dll" (hardware abstration layer)
+
+
+STARTING SUBSYSTEMS:
+    |--> SESSION MANAGER SUBSYSTEM "smss.exe"
+            |--> Loads environmental variables like %APPDATA% and %COMPUTERNAME%
+                  Populates the pagefile located in C:\pagefile.sys
+                  Starts the kernel and user mode sub systems
+                  Starts a csrss.exe to manage processes and threads for each User Subsystem
+
+
+KERNEL SUBSYSTEMS:            #NO USER AT ANY LEVEL CAN INTERACT WITH KERNEL MODE PROCESS
+    |--> creates an manages every resource available by interacting with drivers, controls
+          |--> System power state
+                Process creation and threads
+                Graphical rendering
+                Access Control Lists via the Security Reference Monitor
+
+
+USERS SUBSYSTEM:
+    |--> RUNS A SESSION 0 AND SESSION 1
+          |--> SESSION 0 IS THE SYSTEM
+                SESSION 1 IS THE USERS
+
+(sutdown or reboot stoppage):
+shutdown /r /t 0        # restart, restart time to 0
+shutdown /a             # abort 
+
+
+
+                                                                
+
+          
