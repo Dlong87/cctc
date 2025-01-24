@@ -127,4 +127,9 @@ processor info in powershell:
 
 count number of files in a directory:
 		|--> (get-childitem -Path C:\users\CTF\Videos -file).count 
+
+to look into ASS logs and look for a possisble string:
+		|--> Get-Eventlog -LogName Application | ft -wrap | findstr /i "flag"
+																Security
+																System
 	
