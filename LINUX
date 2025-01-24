@@ -50,6 +50,7 @@ SYSTEMD:
       
       SYSTEMCTL  
 
+
 /ETC/ENVIRONMENT              #USEDTO FIND GLOBAL VARIABLES LOOK TO SEE IF ANYTHING IS INCOORRECT OR CHANGED COULD BE SIGNS OF PERSISTANCE
 /ETC/PROFILE                  #executes whenever a user logs into an interactive shell on Linux
 
@@ -84,6 +85,83 @@ CRONTAB                          #OPENS THE CRON TABLE FOR EDITING
 
 MAN PAGE FOR LINUX COMMANDS:
     https://linux.die.net/man/1/        #list of all major linux commands with options and switches
+
+
+
+BOOT PROCESS:
+BIOS AND UEFI - SAME AS WINDOWS
+
+
+MBR (MASTER BOOT RECORD): #PART OF THE 1ST STAGE BOOTLOADER#
+    |--> contains information on partitions locations on the hard drive. Partitions contain the 2nd stage bootloader known as the GRUB(Grand Unified Bootloader).
+          (BOOTSTRAP): initial section of code that contains a bootloader known as GRUB broken into two stages
+                        |--> 1ST STAGE- GRUB 1 --> LOADS GRUB 2 FROM SELECTED ACTIVE PARTITION 
+
+MBR (MASTER BOOT RECORD) LAYOUT :
+    |--> Address 	          Description 	                    Size (bytes)
+        0x0000 (0)          BOOTSTARP CODE AREA                     446     
+        0x01BE (446)        Partition Entry #1                       16   <---------------|
+        0x01CE (462)        Partition Entry #2                       16                   |----(PARTITION TABLE) BROKEN INTO 4 SECTORS 
+        0x01DE (478)        Partition Entry #3                       16                   |
+        0x01EE (494)        Partition Entry #4                       16   <---------------|
+        0x01FF (510)         0x55    BOOT SIGNATURE                   2   
+	                                                              TOTAL= 512 BYTES
+
+
+GUID PARTITION TABLE(GPT): #PART OF THE FIRST STAGE BOOTLOADER#
+    |--> NEW VERSION OF THE MBR, DOES THE EXACT SAME THING 
+          |--> ONLY WORKS WITH UEFI 
+                HAS MANY BOOT SECTORS FOR REDUNDANCY 
+                SUPPORTS 128 SEPERATE PHYSICAL PARTITIONS, MBR ONLY HAS 4
+                SUPPORTS PARTITIONS UP TO 9 ZETTBYTES
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2ND STAGE BOOTLOADER:
+
+
+GRUB (GRAND UNIFIED BOOTLOADER):
+    |--> LOADS THE LINUX KERNELTHAT THE USER CHOOSES FOR THE HARDDRIVE
+        two stages which load it from two separate locations.
+
+
+        ON BIOS SYSTEM USING MBR:
+          |--> Stage 1 : boot.img                                   #located in the first 440 bytes of the MBR loads
+                Stage 1.5 : core.img                                #located in the MBR between the bootstrap and first partition. It loads
+                Stage 2 : /boot/grub/i386-pc/normal.mod             #which loads the grub menu and then reads
+                      |--> 2.A: /boot/grub/grub.cfg                 #Which displays a list of Linux kernels available to load on the system
+
+        ON UEFI SYSTEM USING GPT: 
+            |--> Stage 1: grubx64.efi                               #Located on an EFI partition or in /boot loads…​
+                  Stage 2: /boot/grub/x86_64-efi/normal.mod
+                        |--> 2.A: /boot/grub/grub.cfg               #Which displays a list of Linux kernels available to load on the system
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+INIT (INITIALIZATION):
+    |--> 7 DIFFERENT MODE FOR COMPUTER INTERACTION WITH THE USER
+Run Level 	                    Meaning 	                                                          Description
+0                                Halt                                                                Shutdown the system
+1                                Single User                                                         single user to login, No network functionality, Used to troubleshoot.
+2                                Multi-user mode                                                     multiple user to login, No network functionality
+3                                Multi-user mode with networking                                     multiple user to login, all networking functionality
+4                                Not used/user-definable                                             can be set to anything
+5                                Multi-user mode with networking and GUI Desktop                     multiple user to login, all networking functionality, graphical desktop instead of a Bash terminal
+6                                Reboot                                                              Restart the system
+
+
+          
+
+
+	
+
+
+	
+
+
 
 
 
