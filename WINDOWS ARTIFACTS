@@ -1,0 +1,101 @@
+#Getting a User's SID
+ #PowerShell:
+get-wmiobject win32_useraccount | select name,sid
+Get-LocalUser | select Name,SID
+ #Command Prompt:
+wmic useraccount get name,sid 
+
+#USERASSIST
+ #CEBFF5CD: Executable File Execution
+Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count"
+ #F4E57C4B: Shortcut File Execution
+Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{F4E57C4B-2036-45F0-A9AB-443BCFE33D9F}\Count"
+
+#BAM
+#Every User on the System
+Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\state\UserSettings\*
+#Single User on the System
+Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\state\UserSettings\<SID>
+
+#RECYCLEBIN
+#Find the Contents of the Recycle Bin
+Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName
+   
+#PREFETCH
+Get-Childitem -Path 'C:\Windows\Prefetch' -ErrorAction Continue | select -First 50
+   
+#JUMP LISTS
+#Programs/Items that were recently used
+Get-Childitem -Recurse C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction silentlyContinue | select FullName, LastAccessTime
+Get-Childitem -Recurse C:\Users\andy.dwyer\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction SilentlyContinue | select CreationTime,FullName |ft -wrap
+Get-Childitem -Recurse C:\Users\andy.dwyer\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction SilentlyContinue | select LastAccessTime,FullName |ft -wrap
+#or
+Get-Childitem -Recurse $env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction SilentlyContinue | select LastAccessTime,FullName | ft -wrap
+
+#RECENT FILES
+Get-childItem 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt'
+Get-childItem 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.*'
+#Converting a Single Value from Hex to Unicode
+[System.Text.Encoding]::Unicode.GetString((gp "REGISTRY::HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt")."1")
+#Convert All Files
+Get-Item "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" | select -Expand property | ForEach-Object {
+    [System.Text.Encoding]::Default.GetString((Get-ItemProperty -Path "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" -Name $_).$_)
+}
+
+#BROWSER ARTIFACTS
+# Frequency
+strings.exe 'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\History' -accepteula
+
+# Most Visited
+strings.exe 'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\Top Sites'
+
+# User Names
+strings.exe  'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\Login Data'
+strings.exe  'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\Login Data' | findstr -i "https*"
+
+#Find FQDNs in Sqlite Text files
+$History = (Get-Content 'C:\users\andy.dwyer\AppData\Local\Google\Chrome\User Data\Default\History') -replace "[^a-zA-Z0-9\.\:\/]",""
+
+$History | Select-String -Pattern "(https|http):\/\/[a-zA-Z_0-9]+\.\w+[\.]?\w+[\.]?\w+" -AllMatches|foreach {$_.Matches.Groups[0].Value}| ft
+
+#AUDIT Policies
+#View All Audit Options
+auditpol /get /category:*
+#View Subcategory
+auditpol /get /category:"Object Access"
+#Sets it
+auditpol /set /subcategory:"File System"
+#Clears It
+auditpol /set /subcategory:"File System" /success:disable
+
+#=====Command Prompt=====
+#EVENT LOGS
+#Show all logs
+wevtutil el
+#Get security log info
+wevtutil gli security
+#Get last 3 events from security log and view in human readable format.
+wevtutil qe security /c:3 /f:text    
+
+#Last 10 entries in System Log
+Get-EventLog -LogName System -Newest 10
+Get-EventLog -LogName System -Newest 10 | Format-Table -wrap
+Get-EventLog -LogName System | Format-Table -wrap
+
+#Search the event logs and show the entire message
+Get-Eventlog -LogName Security | ft -wrap
+#Search for a String
+Get-Eventlog -LogName Security | ft -wrap | findstr /i $tR1nG
+Get-Eventlog -LogName Security | ft -wrap | findstr /i "An attempt was made to access an object."
+
+#Finding Log Type to Query
+Get-WinEvent -Listlog *
+
+#Checking If a User Logged on
+Get-Winevent -FilterHashtable @{logname='Security';id='4624'} | ft -Wrap
+Get-Winevent -FilterHashtable @{logname='Security';id='4624'} | ft -Wrap | findstr /i "generated"
+
+#Checking Powershell Operational Logs
+Get-WinEvent Microsoft-Windows-PowerShell/Operational |Where-Object {$_.Message -ilike "*Out-Default*"} | Format-List
+
+Get-WinEvent Microsoft-Windows-PowerShell/Operational |Where-Object {$_.Message -ilike "*Pipeline ID = 4103"} | Format-List
