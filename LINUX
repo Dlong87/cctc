@@ -179,15 +179,15 @@ SERVERITY:how urgent an event is from 0 TO 7
 
 PATH/TO/LOG/LOCATION:where the log is stored and/or any action taken on the event before storage 
 
-SYSLOG FACILITIES:																													SYSLOG SERVERITIES:
-0				KERNEL MESSAGES																											0				EMERGENCY
-1				USER-LEVEL MESSAGES																									1				ALERT
-2				MAIL SYSTEM																													2				CRITICAL
-3				SYSTEM DAEMONS																											3				ERROR
-4				SEC/AUTH MESSAGES																										4				WARNING
-5				MESSAGES MADE BY SYSLOG																							5				NOTICE
-6				LINE PRINTER SUBSYSTEM																							6				INFO
-7				NETWORK NEWS SUBSYSTEM																							7				DEBUG
+SYSLOG FACILITIES:																						SYSLOG SERVERITIES:
+0				KERNEL MESSAGES																				0				EMERGENCY
+1				USER-LEVEL MESSAGES																		1				ALERT
+2				MAIL SYSTEM																						2				CRITICAL
+3				SYSTEM DAEMONS																				3				ERROR
+4				SEC/AUTH MESSAGES																			4				WARNING
+5				MESSAGES MADE BY SYSLOG																5				NOTICE
+6				LINE PRINTER SUBSYSTEM															  6				INFO
+7				NETWORK NEWS SUBSYSTEM																7				DEBUG
 
 
 
