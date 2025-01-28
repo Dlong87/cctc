@@ -132,4 +132,9 @@ to look into ASS logs and look for a possisble string:
 		|--> Get-Eventlog -LogName Application | ft -wrap | findstr /i "<search creteria>" 
 																Security
 																System
-	
+
+to look into the actual details of the registry use Get-childitem with the path of the REG location
+get-childitem 'hklm:\software'
+											system
+											security
+											hardware
