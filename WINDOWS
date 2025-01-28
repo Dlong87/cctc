@@ -138,3 +138,6 @@ get-childitem 'hklm:\software'
 											system
 											security
 											hardware
+
+to get the permissions for a file or folder:		(powershell)
+(Get-Acl "C:\Windows\System32\drivers\etc\hosts").Access | Format-Table -Property IdentityReference, AccessControlType, FileSystemRights
