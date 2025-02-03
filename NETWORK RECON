@@ -111,7 +111,7 @@ NETCAT BANNER GRAB:
 CURL / WGET:            #CAN BOTH BE USED ON HTTP AND FTP TRAFFIC
     |--> curl http://<IP ADDRESS>
           curl ftp://
-|
+
           wget -r http://<IP ADRESS>          # -R RECURSIVE/ ALL 
           wget -r ftp://
 
