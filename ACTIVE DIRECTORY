@@ -1,0 +1,78 @@
+
+Searching for Multiple Users/List of Users
+Get-ADUser -Filter *
+
+#Searching for a Single User
+Get-ADUser andy.dwyer
+
+#Searching for Multiple Users + Extended Properties
+Get-AdUser -Filter * -Properties *
+Get-ADUser andy.dwyer -Properties *
+
+#Breaking Down -Filter and -Properties
+Get-ADUser -Filter {Name -like '*joh*'}
+Get-ADUser -Filter {Name -like '*admin*'}
+
+#Filter is what you can use to apply your conditions in. 
+Get-ADUser -Filter {Name -like '*odonnell'}
+
+#Filtering for Different Fields, by Default you will get 10 fields : Example Description
+Get-ADUser -Filter *
+
+#Properties is what you can use to view the data.
+Get-ADUser -Filter {Officephone -like '*'}
+Get-ADUser -Filter {Officephone -like '*'} -Properties *
+
+#Full output for Specific User
+Get-ADUser -Filter {Name -like '*odonnell'} -Properties *
+
+#This Filter succeeded, however, since you did not apply the 
+#-Properties switch, it will not display the results
+Get-ADUser -Filter {Description -like '*'}
+
+#With the -Properties switch; However, this will provide you all the fields
+Get-ADUser -Filter {Description -like '*'} -Properties * 
+
+#Adding on the -Properties switch and specifying an additional field; we get 11 fields
+Get-ADUser -Filter {Description -like '*'} -Properties Description
+
+#Because Get-ADUser by default provides us with 10 fields, we will need to pipe our output to Select-Object to filter
+#which fields we want/need
+Get-ADUser -Filter {Description -like '*'} -Properties Description | Select-Object Name,SID,Description
+Get-ADUser -Filter {Description -like '*'} -Properties Description | Select-Object Name,SID,Description | Format-List
+
+
+#FIND Disabled Users
+Get-ADUser -Filter {Enabled -eq "false"} -Properties name,enabled
+
+#Enable User
+Enable-ADAccount -Identity guest
+#Set Password
+Set-ADAccountPassword -Identity guest
+#or
+Set-AdAccountPassword -Identity guest -NewPassword (ConvertTo-SecureString -AsPlaintext -String "PassWord12345!!" -Force)
+#Add to Domain Group
+Add-ADGroupMember -Identity "Domain Admins" -members guest
+
+#CREATE a New User
+#Get sample of naming convention
+Get-ADUser -Filter * | select distinguishedname,name
+
+#Create User
+New-ADUser -Name "Bad.Guy" -PasswordNotRequired 1 -path "OU=3RD PLT,OU=ACO,OU=3RDBN,OU=WARRIORS,DC=army,DC=warriors"
+
+#Set Password
+Set-ADAccountPassword -Identity "Bad.Guy"
+
+# OR Create User & Set Password
+New-ADUser -Name "Bad.Guy" -AccountPassword (ConvertTo-SecureString -AsPlaintext -String "PassWord12345!!" -Force) -path "OU=3RD PLT,OU=CCO,OU=3RDBN,OU=WARRIORS,DC=army,DC=warriors"
+
+#Enable User
+Enable-ADAccount -Identity "Bad.Guy"
+
+#Add to Admin Group
+Add-ADGroupMember -Identity "Domain Admins" -members "Bad.Guy" 
+
+Remove-ADUser -Identity "Bad.Guy"
+Remove-ADGroupMember -Identity "Domain Admins" -Members guest
+Disable-AdAccount -Identity Guest
