@@ -5,8 +5,16 @@ SOCKET TYPES:
 
 User Space Sockets:
     |--> Using nmap with no switches
-          Using netcat to connect to a listener above the well known port range (1024+)
+          Using netcat to connect to a listener or listener above the well known port range (1024+)
+          using /dev/tcp or /dev/udp to transmit data
 
+kernel space sockets:
+    |--> tcpdump or wireshark to capture packets live
+          nmap for OS id/ set flags for scanning
+          netcat to create listener in well-know range (0-1023)
+          using scrapy to craft or modify packets for transmission
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 STREAM SOCKET SENDER:
 #!/usr/bin/python3
@@ -23,7 +31,6 @@ s.close()
 
 
 STREAM SOCKET RECIVER:
-
 #!/usr/bin/python3
 import socket
 import os
@@ -44,13 +51,9 @@ while 1:
     conn.sendall(message)
     conn.close()
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-DATAGRAM SOCKET SENDER: 
-
+DATAGRAM SOCKET SENDER:
 #!/usr/bin/python3
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
@@ -64,7 +67,6 @@ print(data.decode())
 
 
 DATAGRAM SOCKET RECIVER:
-
 #!/usr/bin/python3
 import socket
 import os
@@ -80,7 +82,7 @@ while True:
     print ("Sent by -", address, "port", port)
     s.sendto(b"Message received by the UDP Message Server!", addr)
 
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENCODING:
     |--> The process of taking bits and converting them using a specified cipher
@@ -93,12 +95,19 @@ GOOD ONLINE TOOL FOR ENCODING AND DECODING------ CYBERCHIEF
 
 
 Hex Encoding and Decoding:
+    |-->  echo "Message" | xxd                         #Encode text to Hex
+          xxd file.txt file-encoded.txt                #Encode file to Hex
+          xxd -r file-encoded.txt file-decoded.txt     #Decode file from Hex
+https://linux.die.net/man/1/xxd                        #xxd command resource 
 
-  echo "Message" | xxd   # Encode text to Hex
+
+
+BASE64 Encoding/Decoding: 
+    |-->  echo "convert me" | base64                   #Displays text in base64
+          echo "Y29udmVydCBtZQo=" | base64 --decode    #Displays the base64 in ASCII
+          base64 file.txt > file-encoded.txt           #Coverts content to base64 then save to file
+          base64 -d file-encoded.txt > file-decoded.txt        #Converts content from base64 back to origional format
   
-  xxd file.txt file-encoded.txt      #Encode file to Hex
-
-  xxd -r file-encoded.txt file-decoded.txt     #Decode file from Hex
 
 
 
