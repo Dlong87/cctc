@@ -7,9 +7,10 @@ User Space Sockets:
     |--> Using nmap with no switches
           Using netcat to connect to a listener or listener above the well known port range (1024+)
           using /dev/tcp or /dev/udp to transmit data
+          using tcpdump or wireshark to READ A FILE
 
 kernel space sockets:
-    |--> tcpdump or wireshark to capture packets live
+    |--> tcpdump or wireshark to CAPTURE LIVE TRAFFIC 
           nmap for OS id/ set flags for scanning
           netcat to create listener in well-know range (0-1023)
           using scrapy to craft or modify packets for transmission
@@ -28,6 +29,10 @@ s.send(message)
 data, conn = s.recvfrom(1024)
 print(data.decode('utf-8'))
 s.close()
+
+# TO GET A LISTENER
+    |--> nc -lvp <port in the script> listener needs to be started first of the connection will be missed 
+
 
 
 STREAM SOCKET RECIVER:
@@ -63,6 +68,11 @@ message = b"Message"
 s.sendto(message, (ip_addr, port))
 data, addr = s.recvfrom(1024)
 print(data.decode())
+
+#TO MAKE THE LISTENER
+    |--> nc -lvp <port in the script> -u  
+#-U is used to tell the listener that it is a UDP connection 
+#listener needs to be started first of the connection will be missed 
 
 
 
