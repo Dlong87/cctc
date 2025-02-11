@@ -5,7 +5,6 @@ RECON STEPS:
         Vulnerability Assessment
 
 
-
 NETWORK FINGERPRINTING:
     |--> Collect information relating to target
             |--> NETWORK INFO 
@@ -17,6 +16,7 @@ NETWORK SCANNING:
     |--> PORT SCANNING
           NETWORK SCANNING 
           VULNERABILITY SCANNING 
+
 
 NETWORK ENUM:
     |--> NET RESOURCES AND SHARES 
@@ -164,9 +164,22 @@ INTERNAL DISCOVERY:
             
 
 ACTIVE INTERAL SCANNING:
-    |-->for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done      #PING SCAN SCRIPT TO FIND RESPONCIVE SYSTEMS
+    |-->for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done      #PING SCAN SCRIPT TO FIND RESPONSIVE SYSTEMS
 
+TRACEROUTE:        #USED TO MAP THE INCOMING PORTS OF SYSTEMS IN THE PATH OF YOUR ENDPOINT(TARGET)
+    |--> NMAP --TRACEROUTE <IP OF TARGET>        #USING TRACEROUTE WITH NMAP WILL HOW THE OPEN PORTS OF THE TARGET AND BUILD A PATHLIST TO THE TARGET SYSTEM
 
+FTP COMMANDS:
+#GET INTO FTP SEVER FOR FLAGS:
+    |--> FTP <IP ADDRESS>
+#TO GET INFO FROM FTP:
+    |--> GET <INFO NEEDED>
+#PASSIVE MODE ON THE FTP SERVER:
+    |--> PASSIVE (puts the ftp server into passive mode)
+
+VYOS:
+    |--> VyOS: show interface        #IP CONFIG INFO 
+          VyOS: show ip route        #ROUTING TABLE INFO
 
 
 
@@ -174,11 +187,53 @@ NETWORK MAPPING:
     |--> Device type (Router/host)
           Host-names
           Interface names
-          IP address and CIDRs
+          IP ADDY and CIDRs
           TCP and UDP ports (OPEN ONLY)
           MAC ADDY
           OS type/version
-          creds
+          creds (NOT ALWAYS THERE JUST DEAL WITH IT, KEEP MOVING)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+METHODOLOGY:
+
+PASSIVE EX:
+    |--> WHOIS AND DIG QUERYS (MAYBE OSINT)
+          (NOT REALLY HEAVY SECTION)
+
+ACTIVE EX:
+    |--> SCANNING
+            |--> SCAINNING OF UP SYSTEMS USING NMAP <OPT>
+                  WELL KNOWN PORT 80,21,22,23,ETC...
+                  LOOKING FOR RUNNING SERVICES USING BANNER GRABBING
+                  #nc [Target IP] [Target Port]      #known ports are not always listed at their known port locations
+      |-->PING HOST FOR A RESPONCE
+          NETCAT 
+          CURL/WGET FTP AND HTTP SITES
+            #curl http://<IP ADDRESS>
+              curl ftp://
+              wget -r http://<IP ADRESS>          # -R RECURSIVE/ ALL 
+              wget -r ftp://
+          /DEV/TCP OR /DEV/UDP LOCATION
+
+PASSIVE INTER:          #WITHIN THE NETWORK (HOST ENUMERATION)
+    |--> IP ADDRESS
+          ARP COLLECTION
+          SERVICE FILES
+          ROUTING TABLE
+          LOCAL PROCESSES
+
+ACTIVE INTER:
+    |--> NETWORK SCAN
+          PORT SCAN OF INDIVIDUAL HOST OR NOODS 
+          SERVICE VERIFICATION
+          BANNER GRABBING
+          ARP ENUMERATION
+
+
+(<#RINSE AND REPEAT TILL THE NETOWRK IS FULLY MAPPED AND FINISHED#>)
+                  
 
 
 
