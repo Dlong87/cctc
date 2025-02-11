@@ -1,3 +1,49 @@
+FILE TRANSFER AND PROTOCOLS
+
+FILE TRANSFER PROTOCOL(FTP):
+    |--> CONNECTION OVER TCP
+          CONTROL PORT (21) DATA PORT (20)
+          MODES: ACTIVE/PASSIVE
+          COMMANDS:
+            |--> GET - Retrieves a file from the remote FTP server and stores it locally
+                  PASS/PASSIVE - Switches the FTP server into passive mode
+                  PWD - Prints the current working directory 
+                  PUT - Stores a file on the remote FTP server
+                  EXIT - Terminate FTP sessions and exit
+
+FTP MODES: ACTIVE
+    |--> BUYING A PIZZA, AND THE FTP SERVER BRINGING THE PIZZA TO YOUR SYSTEM
+
+    PASSIVE:
+    |--> BUYING A PIZZA, YOU GO TO GET IT AND THE FTP SEVER GIVES YOU A LOCATION TO PICK IT UP AT
+          (MODE USED TO INTERACT WITH THE SERVER)
+
+
+FILE TRANSFER PROTOCOL SECURE(FTPS):
+    |--> FTP INTIGRATED WITH TLS/SSL
+          MODES:
+            |--> Explicit: client connects to the server’s control port (usually port 21) initially, and then negotiates the use of TLS/SSL encryption before proceeding with file transfers
+                 Implicit: assumes encryption at all times and uses TCP port 990 for control and TCP port 989 for data with encryption happening on both channels.
+
+
+SECURE COPY(SCP):
+    |--> DATA TRANSFER OVER PORT 22
+          SYMMETRIC AND ASYMMETRIC ENCRYPTION
+          NON-INTERACTIVE
+          ALTERNATE SSH PORT (-P) TELLS THE SCP WHAT PORT TO GO THROUGH 
+          (EX. scp -p 6969 /full/path /full/path)
+          
+NETCAT MODES:
+    |--> LISTENER: nc -lvp <RHP>
+          CLIENT: nc <client ip> <RHP>
+
+NETCAT FILE TRANSFER:
+    |--> LISTENER: nc -lvp <RHP> > newfile.txt        (receive file)
+
+    |--> CLIENT: nc 172.16.82.106 <RHP> < file.txt    (sends file)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 SSH TUNNELING AND COVERT CHANNELS 
 
 TUNNELING:
