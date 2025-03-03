@@ -1,0 +1,56 @@
+REVERSE ENGINNERING:
+    |--> the ability too look,read,and counteract the original use of a thing and learn how to exploit it.
+
+CPU DIE EXPLANTION AND INTRO:
+    |--> CPU, 2 MAIN CASHE LOCATIONS: 
+L1 CACHE: FASTEST 
+L2 CACHE: SECOND FASTEST
+L3 CACHE: SHARED MEMORY CACHE AMOUNG ALL THE CORES
+EXTERNAL MEMORY (IN REFERENCE TO THE CPU CORES) SUBSTANTAILLY SLOWER BUT IS MUCH MORE MASSIVE IN THE AMOUNT OF STORAGE SPACE
+
+PROGRAMS IN MEMORY:
+    |--> PROGRAM EXECUTION: loaded into memory. It grows from high to low memory, user space towards kernel space
+    |--> BROKEN UP INTO SECTIONS
+            |--> DATA,CODE,STACK,HEAP
+
+DATA AND CODE: contain the referenced data of a program and the code to be executed
+STACK AND HEAP: stack and heap are temporary places for temporary storage of things
+STACK FLOW- FILO(FIRST IN-LAST OUT)
+
+
+UNDERSTANDING x86_64 REGISTERS(64 BIT REGISTER):
+64 BIT REGISTER- STARTS WITH (r)
+32 BIT REGISTER- STARTS WITH (e)
+
+INSTRUCTION POINTER REGISTER: POINT TO THE MEMORT OFFSET OF THE NEXT INSTRUCTION IN THE CODE SEGMENT.
+64 BIT: (RIP)
+32 BIT: (EIP)
+16 BIT: (IP)
+
+
+CONTROL REGISTER- do common tasks like interrupt control, switching the addressing mode, paging control, and co-processor control.
+FLAG REGISTER- CURRENT STATE OF THE PROCESSOR 
+    |--> EFLAGS: 32 BITS 
+        RFLAGS: 64 BITS 
+# FLAGS ARE SET VIA SPECIFIC BITS IN THE REGISTER *CARRY, ZERO, SIGN FLAG, MOST IMPORTANT*
+
+x86_64 INTEL INSTRUCTIONS: 
+MOV- mov r15, 89 (puts that value of 89 and overwrites the current value of r15)
+PUSH- push r15 (places the vaule of r15 into the stack)
+POP- pop r8 (removes the vaule of r8 from the stack)
+INC- inc r8 (adds 1 from the current value that is at r8)
+DEC- dec r8 (subtracts 1 from the current value that is at r8)
+ADD- add r13, 69 (adds vaule of r13 and 69 and overwrites the current vaule r13 wit the new vaule)
+SUB- sub r13, 10 (subtracts vaule of r13 and 10 and overwrites the current vaule r13 wit the new vaule)
+CMP- cmp r10, r7 (compares the vaules of both r10 and r7 through subtraction)
+JMP- jmp MEM1 (jump to the memory label MEM1 within the code)
+*JMP uses all logical operators JG(jump if greater), JL(jump if less), JNE(jump if not equal), JE(jump equal), JGE(jump greater than or eaqual), JLE(jump less than or equal)*
+
+POP (to take the most recently inserted vaule out of the stack and deleting the vaule from the stack) decerments
+PUSH (puts the value into the stack, retaing the value from its source) increments
+
+
+x86_64 syntax
+
+ instruction destination source                                                                        
+                                                                          
