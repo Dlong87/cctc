@@ -1,0 +1,34 @@
+Phases and Methodology of a Penetration Test:
+    |--> PHASE 1: MISSION DEFINITION
+             |--> mission goal and targets
+                    scope of mission
+                    what networks are valid targets
+                    what machines are valid targets
+                    what exploits are authorized 
+
+|--> PHASE 2: RECON
+        |--> information gathering 
+              websites, job postings, search engines
+              done without touching the target (PASSIVE)
+
+|--> PHASE 3: FOOTPRINTING
+        |--> gather info by interacting with tagets/ target resources 
+
+|--> PHASE 4: EXPLOITATION/ INITAL ACCESS(IA)
+        |--> gain inital access into a target network 
+              (fingerprinting is done, getting onto the box and finding access to/on box and futher enumeration)
+
+|--> PHASE 5: POST-EXPLOITATION
+        |--> establish persistance 
+              escalate priveleges
+              obfuscate info
+              cover tracks 
+              exfiltrate target data
+
+|--> PHASE 6: DOC MISSION
+        |--> doc and report mission details
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
