@@ -1,0 +1,64 @@
+1. Static Analysis
+2. Behavioral Analysis
+1. Open from WINOPS to see how it reacts, if nothing significant, move on
+1. Open new CMD prompt and enter
+1. Make note of PSID
+2. Then enter
+3. Make note of IP/Port then go to LINOPS
+2. From LINOPS, do a netcat on the LINOPS internal IP(192.168.65.10)/ Port <nc>
+and make note of how the file reacts, i.e., what command is it asking for (does it
+say "HELP").
+3. Now, create/ edit windows buffer script (winbuff.py)
+1. Script name is "winbuff.py" AF_INET= IPv4, SOCK_STREAM= TCP
+1. ***If going through a dynamic tunnel, use actual IP and port. If local port use
+tunnel IP and port.
+2. Run the script, type <python> or you can <chmod> the script.
+3. Now that we've determined it works, go back to your <nc> command:
+2. We try to enter a bunch of "AAAAA's" and cant yet determine how many we need to
+cause error.
+1. So, next we open the file ("vulnserver.exe") in "Immunity Debugger" as Admin. Setup
+screen to WINDOW>Tile Horizontal
+
+1. Go to Buffer overflow generator
+(https://wiremask.eu/tools/buffer-overflow-pattern-generator)
+1. Try using 2000 characters from generator, input this into the server
+2. Repeat, increasing quantity each time until it errors out. Will cause Immunity
+debugger to PAUSE and throw an "Access Violation" error.
+3. Find the EIP Hex under registers box, copy/ paste into wiremask adding the "0x"
+to the front.
+4. This will generate your offset.
+5. Paste the following into LINOPS <trun> hit <enter>
+
+6. This will cause the Immunity Debugger to PAUSE
+7. Verify that we have our offset correct:
+8. Update script to:
+9. Then execute using <python>
+1. Should PAUSE the Immunity Debugger and throw a ACCESS
+VIOLATION error while also changing the EIP to "42424242"
+2. Now, locate the heap & stack. Restart Immunity Debugger after each
+PAUSE.
+3. Enter the following command: Immunity Debugger at the bottom of the
+screen and press <enter>. Then right click on LOG DATA>Copy to
+clipboard>Address (we want the 1st address in the results)
+4. Go back to your script and update: (paste the address into your script and
+edit)
+1. Update the "EIP" line to: <EIP = "\xA0\x12\x50\x62"> then save
+5. Open metasploit using <msfconsole> ENTER
+6. Enter <use>
+7. <show>
+8. <set>
+9. <show> to verify it took
+10. Enter generation command <generate>
+11. Now update the script with the shell code (BE SURE TO DELETE
+THE "* 4" FROM THE EIP)
+
+12. Be sure to add "+buf" to the s.send
+13. Open a new window in LINUX, to create a listening port <nc>
+14. Run the script <python>
+15. When successful, Immunity Debugger will TERMINATE
+16. listening port will migrate to WINOPS box
+17. Enter a command to verify connection, I used <hostname> and it
+shows: C:\Users\student>hostname
+hostname
+win-ops
+MISSION SUCCESS
