@@ -1,0 +1,132 @@
+Recon:
+1) Find Devices in Network - ping from network/target space
+2) Find open ports on live devices - For each live device found, run an nmap or nc scan from your ops box through a dynamic tunnel to identify open ports
+3) Identify running services - From your ops box and through dynamic tunnels, nmap using -sV
+4) Interrogate/enumerate services with appropriate NSE scripts such as http-enum.nse or smb-os-discovery.nse
+
+
+
+Web Explotation
+Once we find ports/services:
+
+
+FTP:
+- wget -r (it is possible to provide credentials if we have them to see if there are additional resources an anonymous login won't retrieve)
+-- Be Sure to look at everything you pull back
+-- Consider running an ftp-enum script against the FTP port for additional information
+
+
+ssh/telnet:
+- If we have creds/keys, we can attempt to authenticate onto the box
+
+
+websites:
+- run a commandline dig or whois against the IP or url (don't use browser based dig or whois)
+- view all pages you find (open links in different browser tabs so you don't forget to check any)
+-- View page source code and search for href to see if there are any links you may have missed to other sites
+-- check robots.txt for additional pages and directories and open those in new tabs
+-- check any sites and directories indicated by the http-enum script and open those in new tabs
+
+
+Website input boxes:
+- attempt directory traversal (../../../../../../etc/passwd)
+- attempt command injection (; whoami)
+- check for places we can upload malicious files
+-- If we can upload, we can potentially upload a command injection script (see student FG)
+-- In order for us to use malicious uploads, we need to be able to access the uploaded file. If we cannot access uploads, we cannot use malicious uploads to gain access
+- If there's a message board, chat service, or similar, attempt xss such as the cookie stealer script
+** BE MINDFUL OF POST VS GET. POST will not change what is in the URL bar. GET will often show ".php?[variable]=[value]"
+
+
+SQL Injection:
+- remember ; ends a command and is useful especially in POST requests, though not always required
+- ending a line with # or -- comments out the rest of the select statement, preventing it from executing
+
+Logins:
+For POST requests (input boxes that do not show in the URL):
+- attempt [tom' OR 1='1] in username and password boxes to see if we get something useful back.
+-- We can go into Developer Options (F12) to view the POST request and see what the used variables are called
+For GET requests (when our input shows up in the URL following php?):
+- identify the username and password variable names in the php
+- change variables in the URL to "tom OR 1=1" (quotation marks not needed)
+
+Database queries:
+For POST requests:
+1) identify vulnerable fields by inputting [<option>' OR 1='1] to see if we get more results back than we should
+2) identify how many columns the vulnerable query requires by typing [<vulnerable option> UNION SELECT 1,2,3...], adding an additional column until we get results.
+-- It is recommended to start with the number of columns the legitimate query shows you
+-- If it gives you an error, add another column until you see the numbers at the bottom of the results
+-- Take note of any numbers that don't display or whose format changes (becomes a decimal). Be mindful of any data we put in those columns.
+3) dump the database with our Golden Statement
+-- [<vulnerable option> UNION SELECT table_schema,table_name,column_name[4,5,...] FROM information_schema.columns; --]
+4) interrogate any discovered user created databases and tables
+-- [<vulnerable option> UNION SELECT <column1,column22,column3...> from <database>.<table>; --]
+
+For GET requests:
+1) Determine what a query looks like and looking for the ".php?<variable>=<value>"
+2) identify vulnerable entry by inputting "php?<variable>=<option> OR 1=1" to see if we get more results back than we should
+3) identify how many columns the vulnerable query requires by typing "php?<variable>=<vulnerable option> UNION SELECT 1,2,3...", adding an additional column until we get results.
+-- It is recommended to start with the number of columns the legitimate query sh
+ows you
+-- If it gives you an error, add another column until you see the numbers at the bottom of the results
+-- Take note of any numbers that don't display or whose format changes (becomes a decimal). Be mindful of any data we put in those columns.
+4) dump the database with our Golden Statement
+-- "php?<variable>=<vulnerable option> UNION SELECT table_schema,table_name,column_name(4,5,...) FROM information_schema.columns "
+-- information_schema, mysql, and performance_schema are default databases and not usually of interest of us
+5) interrogate any discovered user created databases and tables
+-- "php?<variable>=<vulnerable option> UNION SELECT <column1,column22,column3...> from <database>.<table>
+
+
+
+Post-Exploitation:
+Enumerate other users:
+	Nix:
+		- cat /etc/passwd
+		- cat /etc/group
+		- view /home/ directory and check user directories if able
+		- w or who to see who is currently online
+	Win:
+		- net user
+		- net localgroup
+		- query user
+		- view C:\Users\ directory and check user directories if able
+Enumerate processes and services of interest:
+	Nix:
+		- ps -elfH
+		- systemctl list-units --type service OR service --status-all
+		- check configs (usually in /etc/)
+	Win: 
+		- tasklist /v OR task manager
+		- net start OR services manager
+Enumerate Network Info:
+	Nix:
+		- identify ip/network info with ip a
+		- identify current connections and listening services with ss -nltp
+		- check /etc/hosts for possible hosts or networks
+			Identified hosts and networks should be subjected to the recon steps above)
+	Win: 
+		- identify ip/network info with ipconfig /all
+		- identify current connections and listening services with netstat /anob
+Enumerate scheduled processes:
+	Nix:
+		- check /etc/crontab
+		- check /etc/cron.d/*
+		- check /var/spool/cron* and /var/spool/at
+	Win:
+		- Check schtasks or the Task Scheduler
+Enumerate other files and directories of interest:
+	Nix:
+		- Any ssh keys or password files?
+		- Anything interesting in /etc/?
+		- uname -a or cat /etc/*rel*
+		- Check /tmp and /var/tmp
+		- syslog or rsyslog configs to see what will log
+		- Check /var/log/
+		- find / -type [f for file or d for directory] -iname "what you're looking for"
+		- Check /root (once priv esc'd)
+		- check /etc/shadow (once priv esc'd)
+	Win: 
+		- C:\Windows\temp
+		- auditpol to see what will log
+		- wevtutil or windows event viewer to view logs
+		- [HKLM || HKCU]\Software\Microsoft\Windows\CurrentVersion\[Run || RunOnce]
